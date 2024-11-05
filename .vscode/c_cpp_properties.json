@@ -1,0 +1,23 @@
+{
+  "configurations":
+  [
+    {
+      "name": "Windows - MSVC",
+      "includePath":
+      [
+        "${workspaceFolder}/logger",
+      ],
+      "defines":
+      [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE"
+      ],
+      "compilerPath": "${env:CXX}",
+      "cStandard": "c17",
+      "cppStandard": "c++20",
+      "intelliSenseMode": "windows-gcc-x64"
+    }
+  ],
+  "version": 4
+}

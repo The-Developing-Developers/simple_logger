@@ -4,6 +4,7 @@
 - [Description](#description)
 - [How to Use](#how-to-use)
 - [Example](#example)
+- [Test](#test)
 
 
 # Description
@@ -40,3 +41,8 @@ int main()
   return 0;
 }
 ```
+
+
+# Test
+
+You can build the test using the provided `build.py` Python script. The script will compile the test program (TODO: and run it). The test program will log messages to the console and to a file named `logfile.txt`.
