@@ -2,10 +2,10 @@
   "configurations":
   [
     {
-      "name": "Windows - MSVC",
+      "name": "Windows - GNU",
       "includePath":
       [
-        "${workspaceFolder}/logger",
+        "${workspaceFolder}/logger"
       ],
       "defines":
       [
@@ -13,7 +13,7 @@
         "UNICODE",
         "_UNICODE"
       ],
-      "compilerPath": "${env:CXX}",
+      "compilerPath": "g++",
       "cStandard": "c17",
       "cppStandard": "c++20",
       "intelliSenseMode": "windows-gcc-x64"
