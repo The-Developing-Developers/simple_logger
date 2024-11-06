@@ -4,7 +4,8 @@
 - [Description](#description)
 - [How to Use](#how-to-use)
 - [Example](#example)
-- [Test](#test)
+  - [Description](#description-1)
+  - [Test](#test)
 
 
 # Description
@@ -25,6 +26,8 @@ This repository contains a simple C++ logger class that can be used to log messa
 
 # Example
 
+## Description
+
 In the following example, a logger object is created with log level `WARNING`. Three messages are logged to the console and to a file named `log.txt`.
 
 Only messages with log levels `WARNING` and `ERROR` will be logged to file. The message with log level `INFO` will be displayed only on the console, but not written to the file.
@@ -43,6 +46,15 @@ int main()
 ```
 
 
-# Test
+## Test
 
-You can build the test using the provided `build.py` Python script. The script will compile the test program (TODO: and run it). The test program will log messages to the console and to a file named `logfile.txt`.
+You can build the example / test program using the provided `build.py` Python script. The script will compile the program and create an executable file under the `build` directory. The test program will log messages to the console and to a file named `logfile.txt`.
+
+- Linux / MacOS:
+  ```
+  python3 ./scripts/build.py
+  ```
+- Windows:
+  ```PowerShell
+  python .\scripts\build.py
+  ```
