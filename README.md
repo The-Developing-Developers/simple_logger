@@ -3,7 +3,9 @@
 
 - [Description](#description)
 - [How to Use](#how-to-use)
-- [Example](#example)
+  - [General Steps](#general-steps)
+  - [CMake](#cmake)
+- [Test Executable (Example)](#test-executable-example)
   - [Description](#description-1)
   - [Test](#test)
 
@@ -15,6 +17,8 @@ This repository contains a simple C++ logger class that can be used to log messa
 
 # How to Use
 
+## General Steps
+
 - Include the `logger.h` header file anywhere in your project where you want to use the logger.
 - Create a logger object using the `Logger` class.
 - Optionally, you can pass to the constructor
@@ -23,8 +27,37 @@ This repository contains a simple C++ logger class that can be used to log messa
 - Use the `log` method to log messages to the console and/or to a file.
 - Include the source file `logger.cpp` in your project's build system.
 
+## CMake
 
-# Example
+This project includes a `CMakeLists.txt` file that can be used to build the logger as a static library. To use the logger in your project, you can include the logger library in your `CMakeLists.txt` file.
+
+This is an example of how to include the logger library in your project, called `UserProject`. Suppose you have cloned the logger repository as a submodule in the `external/logger` directory:
+
+```CMake
+cmake_minimum_required(VERSION 3.12)
+project(UserProject)
+
+# Building the tests is disabled by default. Keep it OFF if you are importing the logger library to your project as a submodule.
+set(BUILD_LOGGER_TESTS OFF)
+
+# Add the submodule directory
+add_subdirectory(external/logger)
+
+# Specify the source files for the user's project
+set(SOURCES main.cpp)
+
+# Create an executable target for the user's project
+add_executable(UserProject ${SOURCES})
+
+# Link the logger library to the user's project
+target_link_libraries(UserProject Logger)
+
+# Add the logger directory to the include directories
+target_include_directories(UserProject PRIVATE ${CMAKE_SOURCE_DIR}/external/logger)
+```
+
+
+# Test Executable (Example)
 
 ## Description
 
