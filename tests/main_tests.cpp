@@ -1,8 +1,8 @@
-#include "logger.h"
+#include "logger/logger.h"
 
 int main(void)
 {
-  using namespace LoggerLib;
+  using namespace SimpleLogger;
 
   // Create a logger instance with a log file and a minimum log level of INFO
   Logger logger("logfile.txt", Logger::LogLevel::INFO);

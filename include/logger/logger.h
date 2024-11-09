@@ -16,7 +16,7 @@
 
 // ----- Public Interface ----- //
 
-namespace LoggerLib
+namespace SimpleLogger
 {
 
 /**
@@ -175,6 +175,6 @@ std::string Logger::getCurrentTimestamp(void) const
   return ss.str();
 }
 
-} // namespace LoggerLib
+} // namespace SimpleLogger
 
 #endif // LOGGER_H

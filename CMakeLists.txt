@@ -19,8 +19,8 @@ target_include_directories(${PROJECT_NAME} INTERFACE
 # Set C++ standard (optional, but recommended)
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
-# Add the tests directory if tests are enabled
-option(ENABLE_TESTS "Build tests for SimpleLogger" ON)
+# In your main `CMakeLists.txt` file, you can add the following code to enable testing:
+# option(ENABLE_TESTS "Enable tests for SimpleLogger library" ON)
 
 if(ENABLE_TESTS)
     # enable_testing()

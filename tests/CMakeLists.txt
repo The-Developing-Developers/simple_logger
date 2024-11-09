@@ -1,3 +1,5 @@
+message(STATUS "*** Configuring tests for SimpleLogger library ***")
+
 # Define the test executable
 add_executable(SimpleLogger_Tests main_tests.cpp)
 
@@ -6,7 +8,7 @@ add_executable(SimpleLogger_Tests main_tests.cpp)
 target_link_libraries(SimpleLogger_Tests INTERFACE SimpleLogger)
 
 # Ensure that the include path for SimpleLogger is correctly propagated
-target_include_directories(SimpleLogger_Tests PRIVATE ${PROJECT_SOURCE_DIR}/include/logger)
+target_include_directories(SimpleLogger_Tests PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 # # Add the test executable to the CTest framework
 # Optionally, add the test executable to the CTest framework if needed
