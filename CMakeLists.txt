@@ -13,8 +13,7 @@ add_library(${PROJECT_NAME} INTERFACE)
 # Specify the include directory for the library as an INTERFACE target. Any project that links to this library will have this directory
 # added to its include path.
 target_include_directories(${PROJECT_NAME} INTERFACE
-    # ${PROJECT_SOURCE_DIR}/include
-    ${PROJECT_SOURCE_DIR}/include/logger
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 # Set C++ standard (optional, but recommended)
