@@ -1,9 +1,82 @@
-#include "Logger.h"
+/**
+ * @file logger.h
+ *
+ * @brief Public interface of the Logger class.
+ **/
+
+#ifndef LOGGER_H
+#define LOGGER_H
+
+#include <string>
 #include <iostream>
+#include <sstream>
 #include <fstream>
 #include <chrono>
 #include <iomanip>
-#include <sstream>
+
+// ----- Public Interface ----- //
+
+namespace LoggerLib
+{
+
+/**
+ * @class Logger
+ * @brief A simple logging class to log messages to a file and the console.
+ *
+ * The `Logger` class provides functionality to log messages with different severity levels (`INFO`, `WARNING`, `ERROR`). \n
+ * Pass a file name to the constructor to create a log file. The log file is opened in append mode. \n
+ * Pass a log level to the constructor to set the minimum log level to log to file. \n
+ */
+class Logger
+{
+public:
+  /**
+   * @enum LogLevel
+   * @brief Defines the severity levels for logging.
+   */
+  enum class LogLevel
+  {
+    INFO,
+    WARNING,
+    ERROR,
+    MAX_PRIORITY, // Messages that are not errors or warnings, but must still be logged to file
+
+    HOW_MANY // Number of log levels
+  };
+
+  /**
+   * @brief Constructs a Logger object.
+   *
+   * @param filename The optional name of the log file.
+   * @param logLevel The optional minimum log level to log to file.
+   */
+  explicit Logger(const std::string& filename = "", LogLevel logLevel = LogLevel::INFO);
+
+  /**
+   * @brief Destroys the Logger object and closes the log file.
+   */
+  ~Logger();
+
+  /**
+   * @brief Logs a message with the specified severity level.
+   *
+   * @param message The message to log.
+   * @param level The severity level of the message (default is `LogLevel::INFO`).
+   */
+  void log(const std::string& message, LogLevel level = LogLevel::INFO);
+
+private:
+  std::ofstream m_logfile; // Logs are written to this file
+  LogLevel m_currentLogLevel; // Determines the minimum log level to log to file
+  size_t m_instanceNumber; // Unique identifier for each instance of the Logger class
+  static size_t g_logMessageCount; // Global counter to count the number of log messages
+
+  std::string getLogLevelString(LogLevel level) const;
+  std::string getCurrentTimestamp() const;
+};
+
+
+// ----- Implementation ----- //
 
 static size_t g_instanceNumber = 0; // Each instance of Logger gets a unique incrementing number
 size_t Logger::g_logMessageCount = 0; // Global counter to count the number of log messages and print them as line numbers in the log file
@@ -101,3 +174,7 @@ std::string Logger::getCurrentTimestamp(void) const
   ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X"); // 'put_time' is a manipulator that formats the time, while 'localtime' converts the time to local time. '%Y-%m-%d %X' formats a date and time string in the form YYYY-MM-DD HH:MM:SS
   return ss.str();
 }
+
+} // namespace LoggerLib
+
+#endif // LOGGER_H

@@ -36,3 +36,6 @@ logfile.txt
 
 # Build files
 build
+
+# Visual Studio Code
+settings.json

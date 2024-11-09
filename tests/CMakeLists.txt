@@ -1,16 +1,14 @@
-cmake_minimum_required(VERSION 3.12)
-project(LoggerTests)
+# Define the test executable
+add_executable(SimpleLogger_Tests main_tests.cpp)
 
-# The logger directory is already added in the main CMakeLists.txt file
+# Link the test executable to the header-only library
+# This ensures that SimpleLogger's include path is added to the test executable
+target_link_libraries(SimpleLogger_Tests INTERFACE SimpleLogger)
 
-# Specify the test source files
-set(TEST_SOURCES main.cpp)
+# Ensure that the include path for SimpleLogger is correctly propagated
+target_include_directories(SimpleLogger_Tests PRIVATE ${PROJECT_SOURCE_DIR}/include/logger)
 
-# Create an executable target for the tests
-add_executable(LoggerTests ${TEST_SOURCES})
+# # Add the test executable to the CTest framework
+# Optionally, add the test executable to the CTest framework if needed
+# add_test(NAME Test_1 COMMAND SimpleLogger_Tests)
 
-# Link the logger library to the test executable
-target_link_libraries(LoggerTests Logger)
-
-# Add the logger directory to the include directories
-target_include_directories(LoggerTests PRIVATE ${CMAKE_SOURCE_DIR}/logger)

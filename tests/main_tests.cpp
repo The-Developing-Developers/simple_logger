@@ -2,6 +2,8 @@
 
 int main(void)
 {
+  using namespace LoggerLib;
+
   // Create a logger instance with a log file and a minimum log level of INFO
   Logger logger("logfile.txt", Logger::LogLevel::INFO);
 
