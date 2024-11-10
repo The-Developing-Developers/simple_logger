@@ -1,4 +1,4 @@
-message(STATUS "*** Configuring tests for SimpleLogger library ***")
+message("\n*** Configuring tests for SimpleLogger library ***\n")
 
 # Define the test executable
 add_executable(SimpleLogger_Tests main_tests.cpp)
