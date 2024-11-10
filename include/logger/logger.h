@@ -61,6 +61,7 @@ public:
 
 private:
   std::ofstream m_logfile; // Logs are written to this file
+  std::string m_filename; // Name of the log file
   LogLevel m_currentLogLevel; // Determines the minimum log level to log to file
   size_t m_instanceNumber; // Unique identifier for each instance of the Logger class
   static size_t g_logMessageCount; // Global counter to count the number of log messages

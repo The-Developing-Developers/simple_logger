@@ -17,6 +17,7 @@ size_t Logger::g_logMessageCount = 0; // Global counter to count the number of l
 Logger::Logger(const std::string& filename, LogLevel logLevel)
   : m_currentLogLevel(logLevel)
   , m_instanceNumber(++g_instanceNumber) // Each instance of Logger gets a unique incrementing number
+  , m_filename(filename)
 {
   // Only print to file if a filename was provided and the file was opened successfully
   if (!filename.empty())
@@ -44,7 +45,7 @@ Logger::~Logger()
   if (m_logfile.is_open())
   {
     this->log("Logger stopped.", LogLevel::MAX_PRIORITY); // Log a message with the maximum priority before closing the log file, so that it is always logged
-    std::cout << "Closing log file..." << std::endl;
+    std::cout << "Closing log file `" << m_filename << "` for `logger " << m_instanceNumber << "`..." << std::endl;
     m_logfile.close();
   }
 }
