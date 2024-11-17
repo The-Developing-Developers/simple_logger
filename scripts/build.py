@@ -1,76 +1,48 @@
-import os
 import subprocess
 import sys
 
-# ANSI colour codes
-class Colour:
-    RED = '\033[91m'
-    GREEN = '\033[92m'
-    CYAN = '\033[96m'
-    YELLOW = '\033[93m'
-    RESET = '\033[0m'
-
-
-def is_gpp_available():
-    """Check if g++ is available in the system's PATH."""
-    result = subprocess.run(['g++', '--version'], capture_output=True, text=True)
-    return result.returncode == 0
-
 def main():
-    # Warning message
-    print(Colour.YELLOW + "\nWARNING" + Colour.RESET + ": You must have a valid GNU C++ compiler (g++) installed and in your system's " + Colour.CYAN + "PATH." + Colour.RESET)
+  # ANSI colour codes
+  RED = '\033[91m'
+  GREEN = '\033[92m'
+  YELLOW = '\033[93m'
+  CYAN = '\033[96m'
+  RESET = '\033[0m'
 
-    # Check if g++ is available
+  # Welcome message
+  print(f"\nWelcome to the {GREEN}SimpleLogger{RESET} build automation script!")
+  print(f"This script will prepare the build files and build the {GREEN}demo executable{RESET} for the project.")
+  print(f"{CYAN}CMake{RESET} is required to run this script. Make sure you have it installed.")
+  print(f"{CYAN}CMake{RESET} will automatically detect the C++ compiler on your system, provided it is in the {RED}PATH{RESET}.")
+  print(f"You can {GREEN}override{RESET} the default generator by providing one as a command line argument. For example: {YELLOW}python ./scripts/build.py \"Visual Studio 16 2019\"{RESET}.")
+  response = input(f"{YELLOW}\nDo you wish to continue?{RESET} (y/n): ")
+
+  if response.lower() in ['yes', 'y']:
     try:
-        is_gpp_available()  # Check if g++ is available
-    except FileNotFoundError:
-        print(Colour.RED + "ERROR" + Colour.RESET + ": GNU C++ compiler (g++) not found in the system's PATH.\n")
-        # print in red colour
-        sys.exit(1)
+      # Prepare the build files
+      generator = sys.argv[1] if len(sys.argv) > 1 else None
+      command = ['cmake', '-S', '.', '-B', 'build', '-DENABLE_TESTS=ON']
+      if generator:
+        print(f"\nUsing the {GREEN}user-specified generator{RESET}: {CYAN}{generator}{RESET}")
+        command.extend(['-G', generator])
+      print(f"{CYAN}\nPreparing build files...{RESET}")
+      print(f"Running command: {YELLOW}{' '.join(command)}{RESET}")
+      subprocess.run(command, check=True)
 
-    # Ask the user if they want to continue
-    proceed = input("Do you want to continue? (y/n): ").strip().lower()
-    if proceed != 'y':
-      print("Aborting compilation.\n")
-      sys.exit(0)
+      # Build the project
+      command = ['cmake', '--build', 'build']
+      print(f"{CYAN}\nBuilding the project...{RESET}")
+      print(f"Running command: {YELLOW}{' '.join(command)}{RESET}")
+      subprocess.run(command, check=True)
 
-    # Constants
-    ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..')) # Assumes the script is in the `scripts` subdirectory
-    SOURCE_DIR = os.path.join(ROOT_DIR, 'logger')
-    TEST_DIR = os.path.join(ROOT_DIR, 'tests')
-    OUTPUT_DIR = os.path.join(ROOT_DIR, 'build')
-    OUTPUT_EXECUTABLE = 'logger_test'
+      print(f"{GREEN}\nSUCCESS{RESET}" + ": The project was built successfully!")
+      print(f"- If you built the project with {CYAN}MSVC{RESET},         you can find the executable in the {YELLOW}build/tests/Debug{RESET} directory.")
+      print(f"- If you built the project with {CYAN}MinGW{RESET} or GCC, you can find the executable in the {YELLOW}build/tests{RESET} directory.")
+    except subprocess.CalledProcessError as e:
+      print(f"{RED}ERROR{RESET}" + f": The build process failed with error code {e.returncode}.")
+  else:
+    print(f"{RED}ABORTED{RESET}" + ": The build process was aborted by the user.")
+  print()
 
-    # Add .exe extension for Windows
-    if os.name == 'nt':
-        OUTPUT_EXECUTABLE += '.exe'
-
-    OUTPUT_EXECUTABLE = os.path.join(OUTPUT_DIR, OUTPUT_EXECUTABLE)
-
-    # Source files to compile
-    SOURCE_FILES = [os.path.join(TEST_DIR, 'main.cpp'), os.path.join(SOURCE_DIR, 'logger.cpp')]
-
-    # Ensure the output directory exists
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-
-    COMPILER = 'g++'
-
-    # Compilation command
-    compile_command = [COMPILER, '-o', OUTPUT_EXECUTABLE] + SOURCE_FILES + ['-I', TEST_DIR, '-I', SOURCE_DIR]
-
-    # Print the compilation command for debugging purposes
-    print(Colour.CYAN + 'Compiling with command:' + Colour.RESET, ' '.join(compile_command))
-
-    # Run the compilation command
-    result = subprocess.run(compile_command, capture_output=True, text=True)
-
-    # Check if the compilation was successful
-    if result.returncode == 0:
-        print(Colour.GREEN + '\nCompilation successful.\n' + Colour.RESET)
-    else:
-        print(Colour.RED + '\nERROR' + Colour.RESET + ': compilation failed.')
-        print('Error message:\n', result.stderr)
-        sys.exit(result.returncode)
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+  main()
