@@ -1,3 +1,8 @@
+/**
+ * @file main_tests.cpp
+ * @brief This is a simple test program to demonstrate the usage of the `SimpleLogger` class.
+ **/
+
 #include "logger/logger.h"
 
 int main(void)
