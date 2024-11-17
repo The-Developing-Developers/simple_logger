@@ -5,6 +5,7 @@
       "name": "Windows - GNU",
       "includePath":
       [
+        "${workspaceFolder}/include",
         "${workspaceFolder}/include/logger"
       ],
       "defines":
