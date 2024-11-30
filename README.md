@@ -25,15 +25,15 @@ In either case, you can use the logger by including the `logger.h` header file i
 
 ## Copy the Files
 
-You just need to copy the `logger.h` and `logger.tpp` files to any directory in your project. Then, include the `logger.h` header file in your project where you want to use the Simple Logger. You can find the `logger.h` and `logger.tpp` files in the `include/logger` directory of this repository.
+You just need to copy the `logger.h` and `logger.tpp` files to any directory in your project. Then, include the `logger.h` header file in your project where you want to use the logger. You can find the `logger.h` and `logger.tpp` files in the `include/logger` directory of this repository.
 
 
 ## CMake
 
 This project includes a `CMakeLists.txt` file that can be used to include the logger as a dependency in your project.
-To use the Simple Logger in your project, you can clone it as a submodule in your project, and include the Simple Logger's root `CMakeLists.txt` file in your project's `CMakeLists.txt` file. The Simple Logger's `CMakeLists.txt` file will automatically make itself available to your project, so that you can include it in your project's target.
+To use the logger in your project, you can clone it as a submodule in your project, and include the logger's root `CMakeLists.txt` file in your project's `CMakeLists.txt` file. The logger's `CMakeLists.txt` file will automatically make itself available to your project, so that you can include it in your project's target.
 
-Supposing you have cloned the Simple Logger repository as a submodule in the `external/logger` directory, you just need to include the following lines in your project's `CMakeLists.txt` file:
+Supposing you have cloned the logger repository as a submodule in the `external/logger` directory, you just need to include the following lines in your project's `CMakeLists.txt` file:
 
 ```CMake
 add_subdirectory(external/logger)
@@ -61,18 +61,26 @@ target_link_libraries(your_target_name PRIVATE SimpleLogger)
 
 # Demo/Test Executable
 
-This repository includes a [test program](tests/main_tests.cpp) that demonstrates how to use the Simple Logger. Building the test program is disabled by default, so that it does not create unnecessary artefacts in your project. You can enable building the test program by setting the `BUILD_TEST` option to `ON` in your project's `CMakeLists.txt` file, or by passing the `-DBUILD_TEST=ON` option to the `cmake` command. The executable will be created in the `build/tests` directory of Simple Logger's subdirectory.
+This repository includes a [test program](tests/main_tests.cpp) that demonstrates how to use the logger.
+
+Building the test program is disabled by default, so that it does not create unnecessary artefacts in your project.
+
+You can enable building the test program by setting the `BUILD_TEST` option to `ON` in your project's `CMakeLists.txt` file, or by passing the `-DBUILD_TEST=ON` option to the `cmake` command.
+
+The executable will be created in the `build/tests` directory of the repository's subdirectory.
 
 
 ## Build Script
 
 If you are just interested in building the test program, you can use the provided Python script. The script will compile the program and create an executable file under the `build/tests` directory. The test program will log messages to the console and to a file named `logfile.txt`.
 
+The build script will autodetect the platform and use the appropriate build system generator. You can also specify the generator to use by passing the name of the generator.
+
 **WARNING**: The Python script requires:
 - **Python 3.8** or later.
 - **CMake 3.12** or later.
 
-Invoke the script from the root directory of the Simple Logger repository:
+Invoke the script from the root directory of the logger repository:
 - Linux / MacOS:
   ```
   python3 ./scripts/build.py
@@ -80,4 +88,14 @@ Invoke the script from the root directory of the Simple Logger repository:
 - Windows:
   ```PowerShell
   python .\scripts\build.py
+  ```
+
+For example, if you wish to specify the generator to be used by CMake, you can pass the generator name as an argument to the script:
+- Linux / MacOS:
+  ```
+  python3 ./scripts/build.py "Unix Makefiles"
+  ```
+- Windows:
+  ```PowerShell
+  python .\scripts\build.py "Visual Studio 16 2019"
   ```

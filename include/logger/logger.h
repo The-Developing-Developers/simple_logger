@@ -1,7 +1,7 @@
 /**
  * @file logger.h
  *
- * @brief Public interface of the `SimpleLogger` class.
+ * @brief Public interface of the `Logger` class.
  **/
 
 #ifndef LOGGER_H
@@ -10,11 +10,11 @@
 #include <string>
 #include <fstream>
 
-namespace SimpleLogger
+namespace ddlib
 {
 
 /**
- * @class SimpleLogger
+ * @class Logger
  * @brief A simple logging class to log messages to a file and the console.
  *
  * The `Logger` class provides functionality to log messages with different severity levels (`INFO`, `WARNING`, `ERROR`). \n
@@ -70,7 +70,7 @@ private:
   std::string getCurrentTimestamp() const;
 };
 
-} // namespace SimpleLogger
+} // namespace ddlib
 
 #include "logger.tpp" // Include the implementation file
 

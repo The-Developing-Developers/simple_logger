@@ -1,13 +1,13 @@
 /**
  * @file main_tests.cpp
- * @brief This is a simple test program to demonstrate the usage of the `SimpleLogger` class.
+ * @brief This is a simple test program to demonstrate the usage of the `Logger` class.
  **/
 
 #include "logger/logger.h"
 
 int main(void)
 {
-  using namespace SimpleLogger;
+  using namespace ddlib;
 
   // Create a logger instance with a log file and a minimum log level of INFO
   Logger logger("logfile.txt", Logger::LogLevel::INFO);

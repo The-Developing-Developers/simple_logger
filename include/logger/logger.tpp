@@ -8,7 +8,7 @@
 #include <chrono>
 #include <iomanip>
 
-namespace SimpleLogger
+namespace ddlib
 {
 
 static size_t g_instanceNumber = 0; // Each instance of Logger gets a unique incrementing number
@@ -109,4 +109,4 @@ std::string Logger::getCurrentTimestamp(void) const
   return ss.str();
 }
 
-} // namespace SimpleLogger
+} // namespace ddlib
