@@ -21,7 +21,7 @@ def main():
     try:
       # Prepare the build files
       generator = sys.argv[1] if len(sys.argv) > 1 else None
-      command = ['cmake', '-S', '.', '-B', 'build', '-DENABLE_TESTS=ON']
+      command = ['cmake', '-S', '.', '-B', 'build', '-DBUILD_TESTS=ON']
       if generator:
         print(f"\nUsing the {GREEN}user-specified generator{RESET}: {CYAN}{generator}{RESET}")
         command.extend(['-G', generator])
