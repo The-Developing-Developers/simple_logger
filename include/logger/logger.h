@@ -1,7 +1,7 @@
 /**
  * @file logger.h
  *
- * @brief Public interface of the Logger class.
+ * @brief Public interface of the `Logger` class.
  **/
 
 #ifndef LOGGER_H
@@ -9,6 +9,9 @@
 
 #include <string>
 #include <fstream>
+
+namespace ddlib
+{
 
 /**
  * @class Logger
@@ -58,6 +61,7 @@ public:
 
 private:
   std::ofstream m_logfile; // Logs are written to this file
+  std::string m_filename; // Name of the log file
   LogLevel m_currentLogLevel; // Determines the minimum log level to log to file
   size_t m_instanceNumber; // Unique identifier for each instance of the Logger class
   static size_t g_logMessageCount; // Global counter to count the number of log messages
@@ -65,5 +69,9 @@ private:
   std::string getLogLevelString(LogLevel level) const;
   std::string getCurrentTimestamp() const;
 };
+
+} // namespace ddlib
+
+#include "logger.tpp" // Include the implementation file
 
 #endif // LOGGER_H

@@ -3,86 +3,89 @@
 
 - [Description](#description)
 - [How to Use](#how-to-use)
-  - [General Steps](#general-steps)
-  - [CMake](#cmake)
-- [Test Executable (Example)](#test-executable-example)
-  - [Description](#description-1)
-  - [Test](#test)
+  - [Method 1. Copy the Files](#method-1-copy-the-files)
+  - [Method 2. CMake](#method-2-cmake)
+- [Demo/Test Executable](#demotest-executable)
+  - [Build Script](#build-script)
+    - [Invoking the Build Script](#invoking-the-build-script)
 
 
 # Description
 
-This repository contains a simple C++ logger class that can be used to log messages to the console and/or to a file. The logger supports three log levels: `INFO`, `WARNING`, and `ERROR`. The log level can be set when creating the logger object.
+This repository contains a very simple C++ logger class that can be used to log messages to the console and/or to a file. The logger supports three log levels: `INFO`, `WARNING`, and `ERROR`. The log level can be set when creating the logger object.
 
 
 # How to Use
 
-## General Steps
+This logger is a header-only library. You can either:
+1. Copy the `logger.h` and `logger.tpp` files to your project.
+2. Include this repository as a submodule of your project, and build with CMake.
 
-- Include the `logger.h` header file anywhere in your project where you want to use the logger.
-- Create a logger object using the `Logger` class.
-- Optionally, you can pass to the constructor
-  - A string with the name of the file where the logs will be written.
-  - The log level (default is `INFO`).
-- Use the `log` method to log messages to the console and/or to a file.
-- Include the source file `logger.cpp` in your project's build system.
+In either case, you can use the logger in your source code by including the `logger.h` header file in your project, and creating a logger object using the `Logger` class defined in the `ddlib` namespace. You can see the provided [test program](#demotest-executable) for an example of how to use the logger.
 
-## CMake
 
-This project includes a `CMakeLists.txt` file that can be used to build the logger as a static library. To use the logger in your project, you can include the logger library in your `CMakeLists.txt` file.
+## Method 1. Copy the Files
 
-This is an example of how to include the logger library in your project, called `UserProject`. Suppose you have cloned the logger repository as a submodule in the `external/logger` directory:
+You just need to copy the `logger.h` and `logger.tpp` files to any directory in your project, and update your build system to include the directory in the include paths. Then, include the `logger.h` header file in your project where you want to use the logger. You can find the `logger.h` and `logger.tpp` files in the `include/logger` directory of this repository.
+
+
+## Method 2. CMake
+
+This project includes a `CMakeLists.txt` file that can be used to include the logger as a dependency in your project.
+To use the logger in your project, you can clone it as a submodule in your project, and include the logger's root `CMakeLists.txt` file in your project's `CMakeLists.txt` file with an `add_subdirectory` command. The logger's `CMakeLists.txt` file will automatically make itself available to your project, so that you can include it in your project's target.
+
+Supposing you have cloned the logger repository as a submodule in the `external/logger` directory, you just need to add the following lines in your project's `CMakeLists.txt` file:
+
+```CMake
+add_subdirectory(external/logger)
+target_link_libraries(your_project_name PRIVATE SimpleLogger)
+```
+
+- The `add_subdirectory(external/logger)` line should be added after defining the project and before defining any targets that depend on the logger.
+- The `target_link_libraries(your_project_name PRIVATE SimpleLogger)` line should be added after defining the target that will use the logger.
+- Replace `your_project_name` with the name of the target that will use the binary tree.
+
+Here is a minimalistic example of how it should be structured:
 
 ```CMake
 cmake_minimum_required(VERSION 3.12)
-project(UserProject)
+project(your_project_name VERSION 1.0.0 LANGUAGES CXX)
 
-# Building the tests is disabled by default. Keep it OFF if you are importing the logger library to your project as a submodule.
-set(BUILD_LOGGER_TESTS OFF)
-
-# Add the submodule directory
+# Add the logger subdirectory
 add_subdirectory(external/logger)
 
-# Specify the source files for the user's project
-set(SOURCES main.cpp)
+# Define your target
+add_executable(${PROJECT_NAME} main.cpp)
 
-# Create an executable target for the user's project
-add_executable(UserProject ${SOURCES})
-
-# Link the logger library to the user's project
-target_link_libraries(UserProject Logger)
-
-# Add the logger directory to the include directories
-target_include_directories(UserProject PRIVATE ${CMAKE_SOURCE_DIR}/external/logger)
+# Link the logger library to your target
+target_link_libraries(${PROJECT_NAME} PRIVATE SimpleLogger)
 ```
 
+# Demo/Test Executable
 
-# Test Executable (Example)
+This repository includes a [test program](tests/main_tests.cpp) that demonstrates how to use the logger.
 
-## Description
+Building the test program is disabled by default, so that it does not create unnecessary artefacts in your project.
 
-In the following example, a logger object is created with log level `WARNING`. Three messages are logged to the console and to a file named `log.txt`.
+You can enable building the test program by setting the `BUILD_TESTS` option to `ON` in your project's `CMakeLists.txt` file, or by passing the `-DBUILD_TEST=ON` option to the `cmake` command.
 
-Only messages with log levels `WARNING` and `ERROR` will be logged to file. The message with log level `INFO` will be displayed only on the console, but not written to the file.
-
-```cpp
-#include "logger.h"
-
-int main()
-{
-  Logger logger("log.txt", Logger::WARNING);
-  logger.log(Logger::INFO, "This is an info message.");
-  logger.log(Logger::DEBUG, "This is a debug message.");
-  logger.log(Logger::ERROR, "This is an error message.");
-  return 0;
-}
-```
+The executable will be created in the `build/tests` directory of the repository's subdirectory.
 
 
-## Test
+## Build Script
 
-You can build the example / test program using the provided `build.py` Python script. The script will compile the program and create an executable file under the `build` directory. The test program will log messages to the console and to a file named `logfile.txt`.
+If you are just interested in building the test program, you can use the provided Python script. The script will compile the program and create an executable file under the `build/tests` directory. The test program will log messages to the console and to a file named `logfile.txt`.
 
+The build script will autodetect the platform and use the appropriate build system generator. You can also specify the generator to use by passing the name of the generator.
+
+**WARNING**: The Python script requires:
+- **Python 3.8** or later.
+- **CMake 3.12** or later.
+
+
+### Invoking the Build Script
+
+Invoke the script from the root directory of the logger repository:
 - Linux / MacOS:
   ```
   python3 ./scripts/build.py
@@ -90,4 +93,14 @@ You can build the example / test program using the provided `build.py` Python sc
 - Windows:
   ```PowerShell
   python .\scripts\build.py
+  ```
+
+For example, if you wish to specify the generator to be used by CMake, you can pass the generator name as an argument to the script:
+- Linux / MacOS:
+  ```
+  python3 ./scripts/build.py "Unix Makefiles"
+  ```
+- Windows:
+  ```PowerShell
+  python .\scripts\build.py "Visual Studio 16 2019"
   ```

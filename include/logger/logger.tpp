@@ -1,9 +1,15 @@
-#include "Logger.h"
+/**
+ * @brief Implementation of the `Logger` class.
+ **/
+
+#include <string>
 #include <iostream>
-#include <fstream>
+#include <sstream>
 #include <chrono>
 #include <iomanip>
-#include <sstream>
+
+namespace ddlib
+{
 
 static size_t g_instanceNumber = 0; // Each instance of Logger gets a unique incrementing number
 size_t Logger::g_logMessageCount = 0; // Global counter to count the number of log messages and print them as line numbers in the log file
@@ -11,6 +17,7 @@ size_t Logger::g_logMessageCount = 0; // Global counter to count the number of l
 Logger::Logger(const std::string& filename, LogLevel logLevel)
   : m_currentLogLevel(logLevel)
   , m_instanceNumber(++g_instanceNumber) // Each instance of Logger gets a unique incrementing number
+  , m_filename(filename)
 {
   // Only print to file if a filename was provided and the file was opened successfully
   if (!filename.empty())
@@ -38,7 +45,7 @@ Logger::~Logger()
   if (m_logfile.is_open())
   {
     this->log("Logger stopped.", LogLevel::MAX_PRIORITY); // Log a message with the maximum priority before closing the log file, so that it is always logged
-    std::cout << "Closing log file..." << std::endl;
+    std::cout << "Closing log file `" << m_filename << "` for `logger " << m_instanceNumber << "`..." << std::endl;
     m_logfile.close();
   }
 }
@@ -101,3 +108,5 @@ std::string Logger::getCurrentTimestamp(void) const
   ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X"); // 'put_time' is a manipulator that formats the time, while 'localtime' converts the time to local time. '%Y-%m-%d %X' formats a date and time string in the form YYYY-MM-DD HH:MM:SS
   return ss.str();
 }
+
+} // namespace ddlib
