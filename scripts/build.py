@@ -3,11 +3,11 @@ import sys
 
 def main():
   # ANSI colour codes
-  RED = '\033[91m'
-  GREEN = '\033[92m'
+  RED    = '\033[91m'
+  GREEN  = '\033[92m'
   YELLOW = '\033[93m'
-  CYAN = '\033[96m'
-  RESET = '\033[0m'
+  CYAN   = '\033[96m'
+  RESET  = '\033[0m'
 
   # Welcome message
   print(f"\nWelcome to the {GREEN}SimpleLogger{RESET} build automation script!")
@@ -21,19 +21,21 @@ def main():
     try:
       # Prepare the build files
       generator = sys.argv[1] if len(sys.argv) > 1 else None
-      command = ['cmake', '-S', '.', '-B', 'build', '-DBUILD_TESTS=ON']
+      COMMAND: list[str] = ['cmake', '-S', '.', '-B', 'build', '-DBUILD_TESTS=ON']
       if generator:
         print(f"\nUsing the {GREEN}user-specified generator{RESET}: {CYAN}{generator}{RESET}")
-        command.extend(['-G', generator])
+        COMMAND.extend(['-G', generator])
       print(f"{CYAN}\nPreparing build files...{RESET}")
-      print(f"Running command: {YELLOW}{' '.join(command)}{RESET}")
-      subprocess.run(command, check=True)
+      COMMAND_STR: str = ' '.join(COMMAND)
+      print(f"Running command: {YELLOW}{COMMAND_STR}{RESET}")
+      subprocess.run(COMMAND, check=True)
 
       # Build the project
-      command = ['cmake', '--build', 'build']
+      COMMAND: list[str] = ['cmake', '--build', 'build']
+      COMMAND_STR:  str  = ' '.join(COMMAND)
       print(f"{CYAN}\nBuilding the project...{RESET}")
-      print(f"Running command: {YELLOW}{' '.join(command)}{RESET}")
-      subprocess.run(command, check=True)
+      print(f"Running command: {YELLOW}{COMMAND_STR}{RESET}")
+      subprocess.run(COMMAND, check=True)
 
       print(f"{GREEN}\nSUCCESS{RESET}" + ": The project was built successfully!")
       print(f"- If you built the project with {CYAN}MSVC{RESET},         you can find the executable in the {YELLOW}build/tests/Debug{RESET} directory.")
